@@ -565,6 +565,16 @@ export interface BackgroundGeolocationPlugin {
   showLocationSettings(): void;
 
   /**
+   * Checks backgroundgeolocation has enabled for API 29+
+   * 
+   * Platform: Android
+   */
+  hasLocationPermissionAllowed(
+    sucess: any,
+    fail?: any
+  ): void;
+
+  /**
    * Return all stored locations.
    * Useful for initial rendering of user location on a map just after application launch.
    *

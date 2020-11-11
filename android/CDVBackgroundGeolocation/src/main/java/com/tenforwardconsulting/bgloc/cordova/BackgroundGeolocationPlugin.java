@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.util.Collection;
 
+import android.os.Build;
+
 public class BackgroundGeolocationPlugin extends CordovaPlugin implements PluginDelegate {
 
     public static final String LOCATION_EVENT = "location";
@@ -70,6 +72,8 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
     public static final String ACTION_END_TASK = "endTask";
     public static final String ACTION_REGISTER_HEADLESS_TASK = "registerHeadlessTask";
     public static final String ACTION_FORCE_SYNC = "forceSync";
+
+    public static final String HAS_LOCATION_PERMISSION_ALLOWED = "hasLocationPermissionAllowed";
 
     private BackgroundGeolocationFacade facade;
 
@@ -349,6 +353,15 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
             logger.debug("Forced location sync requested");
             facade.forceSync();
             return true;
+        } else if (HAS_LOCATION_PERMISSION_ALLOWED.equals(action)) {
+            if(Build.VERSION.SDK_INT >= 29) {
+                try {
+                    boolean hasBackgroundLocationPermission = facade.hasBackgroundLocationPermission();
+                    callbackContext.success(permissionResult(hasBackgroundLocationPermission));
+                } catch (Exception e) {
+                    callbackContext.sendPluginResult(ErrorPluginResult.from("Checking location permission failed", e, PluginException.SERVICE_ERROR));
+                }
+            }
         }
 
         return false;
@@ -515,6 +528,12 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
         json.put("locationServicesEnabled", facade.locationServicesEnabled());
         json.put("authorization", facade.getAuthorizationStatus());
 
+        return json;
+    }
+
+    private JSONObject permissionResult(boolean hasPermission) throws JSONException, PluginException {
+        JSONObject json = new JSONObject();
+        json.put("hasPermission", hasPermission);
         return json;
     }
 

@@ -150,6 +150,13 @@ var BackgroundGeolocation = {
       'showLocationSettings', []);
   },
 
+  hasLocationPermissionAllowed: function (success, failure) {
+    exec(success || emptyFnc,
+      failure || emptyFnc,
+      'BackgroundGeolocation',
+      'hasLocationPermissionAllowed', []);
+  },
+
   getLocations: function (success, failure) {
     assertFnc(success, [TAG, '#getLocations requires a success callback']);
     exec(success,
