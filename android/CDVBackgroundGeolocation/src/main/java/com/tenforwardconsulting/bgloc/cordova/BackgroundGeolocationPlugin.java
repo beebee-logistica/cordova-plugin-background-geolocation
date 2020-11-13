@@ -368,6 +368,15 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
                     callbackContext.sendPluginResult(ErrorPluginResult.from("Checking location permission failed", e, PluginException.SERVICE_ERROR));
                 }
             }
+            else {
+                try {
+                    boolean hasBackgroundLocationPermission = facade.hasBackgroundLocationPermission();
+                    callbackContext.success(permissionResult(true));
+                } catch (Exception e) {
+                    callbackContext.sendPluginResult(ErrorPluginResult.from("Checking location permission failed", e, PluginException.SERVICE_ERROR));
+                }
+            }
+            return true;
         }
 
         return false;
