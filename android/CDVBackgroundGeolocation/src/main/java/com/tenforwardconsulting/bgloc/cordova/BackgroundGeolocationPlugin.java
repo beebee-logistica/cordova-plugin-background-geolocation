@@ -15,6 +15,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import android.content.Intent;
+
 import com.marianhello.bgloc.BackgroundGeolocationFacade;
 import com.marianhello.bgloc.Config;
 import com.marianhello.bgloc.PluginDelegate;
@@ -75,9 +77,12 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
 
     public static final String HAS_LOCATION_PERMISSION_ALLOWED = "hasLocationPermissionAllowed";
 
+    public static final int REQUEST_BG_LOCATION_PERMISSION = 99;
+    
     private BackgroundGeolocationFacade facade;
-
+    
     private CallbackContext callbackContext;
+    private CallbackContext callbackActivityResultContext;
 
     private org.slf4j.Logger logger;
 
