@@ -555,7 +555,10 @@ export interface BackgroundGeolocationPlugin {
    *
    * Platform: Android >= 6, iOS >= 8.0
    */
-  showAppSettings(): void;
+  showAppSettings(
+    success: any,
+    fail?: any
+  ): void;
 
   /**
    * Show system settings to allow configuration of current location sources.
@@ -570,7 +573,7 @@ export interface BackgroundGeolocationPlugin {
    * Platform: Android
    */
   hasLocationPermissionAllowed(
-    sucess: any,
+    success: any,
     fail?: any
   ): void;
 

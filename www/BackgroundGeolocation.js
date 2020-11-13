@@ -136,9 +136,9 @@ var BackgroundGeolocation = {
       'isLocationEnabled', []);
   },
 
-  showAppSettings: function () {
-    exec(emptyFnc,
-      emptyFnc,
+  showAppSettings: function (success, failure) {
+    exec(success || emptyFnc,
+      failure || emptyFnc,
       'BackgroundGeolocation',
       'showAppSettings', []);
   },

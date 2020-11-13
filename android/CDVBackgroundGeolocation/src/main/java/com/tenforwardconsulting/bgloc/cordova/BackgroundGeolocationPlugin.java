@@ -208,8 +208,9 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
 
             return true;
         } else if (ACTION_SHOW_APP_SETTINGS.equals(action)) {
-            BackgroundGeolocationFacade.showAppSettings(context);
-
+            this.callbackActivityResultContext = callbackContext;
+            cordova.setActivityResultCallback(this);
+            getActivity().startActivityForResult(BackgroundGeolocationFacade.showAppSettings(context), REQUEST_BG_LOCATION_PERMISSION);
             return true;
         } else if (ACTION_GET_STATIONARY.equals(action)) {
             try {
@@ -597,5 +598,23 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
     @Override
     public void onError(PluginException e) {
         sendError(e);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (this.callbackActivityResultContext == null) {
+          return;
+        }
+        if (requestCode == REQUEST_BG_LOCATION_PERMISSION) {
+            try {
+                boolean hasBackgroundLocationPermission = facade.hasBackgroundLocationPermission();
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, permissionResult(hasBackgroundLocationPermission));
+                this.callbackActivityResultContext.sendPluginResult(pluginResult);
+            } catch (JSONException | PluginException e) {
+                e.printStackTrace();
+                this.callbackActivityResultContext.error(e.getMessage());
+            }
+          this.callbackActivityResultContext = null;
+        }
     }
 }
