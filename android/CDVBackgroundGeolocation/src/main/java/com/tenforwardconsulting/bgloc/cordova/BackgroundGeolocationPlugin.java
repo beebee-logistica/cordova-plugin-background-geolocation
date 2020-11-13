@@ -539,7 +539,7 @@ public class BackgroundGeolocationPlugin extends CordovaPlugin implements Plugin
 
     private JSONObject permissionResult(boolean hasPermission) throws JSONException, PluginException {
         JSONObject json = new JSONObject();
-        json.put("hasPermission", hasPermission);
+        json.put("isEnabled", hasPermission);
         return json;
     }
 
